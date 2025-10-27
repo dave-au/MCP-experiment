@@ -10,6 +10,7 @@ from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_mcp_adapters.tools import load_mcp_tools
 from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import HumanMessage, SystemMessage
+from llm_and_tools_log import LLMAndToolLogger
 
 # Want debugging?
 # logging.getLogger("langchain_mcp_adapters").setLevel(logging.DEBUG)
@@ -69,6 +70,16 @@ async def main():
         # Keep running history so the agent has context. Start with the system prompt
         messages = [SYSTEM_PROMPT]
 
+        # Create the transcript logger (file only; no console spam)
+        logger = LLMAndToolLogger(
+            logfile="llm_and_tools_wire.log",
+            also_print=False,
+            redact=[os.environ.get("OPENAI_API_KEY")],
+            pretty_json=True,
+            max_schema_chars=4000,
+            max_tool_result_chars=4000,
+        )
+
         # Interactive loop for the chatbot
         while True:
             user_input = input("You: ").strip()
@@ -77,7 +88,10 @@ async def main():
 
             messages.append(HumanMessage(content=user_input))
 
-            result = await app.ainvoke({"messages": messages})
+            result = await app.ainvoke(
+                {"messages": messages},
+                config={"callbacks": [logger]},
+            )
 
             messages = result["messages"]
             bot_reply = messages[-1].content
