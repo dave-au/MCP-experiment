@@ -1,0 +1,23 @@
+# Local config, logs, etc.
+.env
+*.log
+*.old
+
+# Python build/runtime stuff
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.build/
+
+# Venv stuff
+.venv/
+venv/
+
+# OS/editor files
+.DS_Store
+.idea/
+.vscode/
+.pytest_cache/
+.mypy_cache/
