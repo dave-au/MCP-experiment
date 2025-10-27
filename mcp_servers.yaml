@@ -1,0 +1,28 @@
+
+# mcp_servers.yaml
+servers:
+  math:
+    transport: stdio
+    command: python3
+    args: [mcp_server_math.py]
+
+#  math:
+#    transport: stdio
+#    command: python3
+#    args: [mcp_stdio_tap.py, --, python3, mcp_server_math.py]
+
+#  math:
+#    transport: stdio
+#    command: python3
+#    args: [mcp_stdio_tap.py, --logfile, mcpmath.log, --pretty, --, python3, mcp_server_math.py]
+
+#  math:
+#    transport: streamable_http         
+#    url: http://127.0.0.1:8000/mcp     # required for streamable-http
+
+  shell:
+    transport: stdio                   # required for stdio
+    command: python3
+    args: [mcp_server_shell.py]
+
+
